@@ -1,9 +1,13 @@
-import Image from "next/image";
+'use client'
+
+import Image from 'next/image';
+// 
+import signature from '@/public/signature.svg'
 
 export default function Home() {
   return (
-   <main>
-    
-   </main>
+    <main>
+      <Image src={signature} alt=''/>
+    </main>
   );
 }
