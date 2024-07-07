@@ -10,7 +10,7 @@ _July 2021 - now_
 
 Title: IT Manager
 
-Role: Developing & Managing internal solutions such as CRM, Dialers, Attendance Systems.
+Role: Developing, Managing + Deploying internal solutions such as CRM, Dialers, Attendance Systems.
 
 #### Projects (Public-facing projects have clickable links)
 
@@ -57,7 +57,10 @@ CGPA: 7.08
 
 ### Things I like a lot (Personal time, no industry applications)
 
-[Figma](https://www.figma.com/), [Canva Pro](https://www.canva.com/), [Python](https://www.python.org/), [Docker](https://www.docker.com/), [Hugging Face](https://huggingface.co/), [Tailwind css](https://tailwindcss.com/)
+[Figma](https://www.figma.com/), [Canva Pro](https://www.canva.com/), [Python](https://www.python.org/), [Docker](https://www.docker.com/), [Hugging Face](https://huggingface.co/), [Tailwind css](https://tailwindcss.com/), [XMind](https://xmind.app/), [MongoDB](https://www.mongodb.com/)
+
+### Things I am learning
+[Redux Toolkit](https://redux-toolkit.js.org/)
 
 ### Contact
 
