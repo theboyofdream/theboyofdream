@@ -12,18 +12,26 @@ Title: IT Manager
 
 Role: Developing, Managing + Deploying internal solutions such as CRM, Dialers, Attendance Systems.
 
-#### Projects (Public-facing projects have clickable links)
+## Projects
 
-Note: This is meant to be a short summary.
+### Projects (Public-facing projects have clickable links)
+
 - [Find WeekNo](https://gist.github.com/theboyofdream/712ca4fd6a5ccb015f9e4086256b6957)
-  - Wrote function which calculates week number *without using for loop*.
+  - Wrote function which calculates week number without using **for loop**.
   - Tech: JavaScript
 - [Telegram bot](https://github.com/theboyofdream/telegram-bot)
-  - Created for friend (Youtuber), which listens to messages from multiple channels > filters them > modifies > send to community channel.
+  - Created for friend (Youtuber), which listens to messages from multiple channels -> filters them -> modifies -> send to community channel.
   - Tech: Python, Telethon library, Telegram API
 - [Collections/Bookmarks](https://github.com/theboyofdream/collections)
   - Collections of links which I generally use and thinks can be useful to others.
   - Tech: NextJS, Tamagui, Tailwind css, Vercel.
+
+### Projects (Private/without links)
+
+- Youtube fake view
+  - Using NodeJS & [puppeteer](https://pptr.dev/), made bot that opens multiple chrome instances -> goto youtube -> search for videos from specific channel -> start viewing. Can opens upto 12 instances of chrome in windows (8GB ram) machine.
+- Wedding Form
+  - Created lenthy form (upto 30 fields + docs upload) + validation + docs compression -> send user response to Google Sheet using their [Apps Script](https://www.google.com/script/start/) and save docs to Google Drive.
 
 ## Education
 
@@ -32,14 +40,8 @@ Note: This is meant to be a short summary.
 _July 2018 - May 2021_
 
 Title: Computer Science (Bachelor of Science)
+
 CGPA: 7.08
-
-#### Projects
-
-- Youtube fake view
-  - Using NodeJS & [puppeteer](https://pptr.dev/), made bot that opens multiple chrome instances > goto youtube > search for videos from specific channel > start viewing. Can opens upto 12 instances of chrome in windows (8GB ram) machine.
-- Wedding Form
-  - Created lenthy form (upto 30 fields + docs input) + validation + docs compression > send user response to Google Sheet using their [Apps Script](https://www.google.com/script/start/).
 
 ## Tech
 
