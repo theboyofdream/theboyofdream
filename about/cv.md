@@ -10,21 +10,21 @@ _July 2021 - now_
 
 Title: IT Manager
 
-Role: Developing, Managing + Deploying internal solutions such as CRM, Dialers, Attendance Systems.
+Role: Developing, Maintaining + Deploying internal solutions such as CRM, Dialers, Attendance Systems.
 
 ## Projects
 
 ### Projects (Public-facing projects have clickable links)
 
+- [Collections/Bookmarks](https://github.com/theboyofdream/collections)
+  - Collections of links which I generally use and thinks can be useful to others.
+  - Tech: NextJS, Tamagui, Tailwind css, Vercel.
 - [Find WeekNo](https://gist.github.com/theboyofdream/712ca4fd6a5ccb015f9e4086256b6957)
   - Wrote function which calculates week number without using **for loop**.
   - Tech: JavaScript
 - [Telegram bot](https://github.com/theboyofdream/telegram-bot)
   - Created for friend (Youtuber), which listens to messages from multiple channels -> filters them -> modifies -> send to community channel.
   - Tech: Python, Telethon library, Telegram API
-- [Collections/Bookmarks](https://github.com/theboyofdream/collections)
-  - Collections of links which I generally use and thinks can be useful to others.
-  - Tech: NextJS, Tamagui, Tailwind css, Vercel.
 
 ### Projects (Private/without links)
 
