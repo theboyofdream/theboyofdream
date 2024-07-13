@@ -1,0 +1,1 @@
+I build things in JavaScript/TypeScript. Mostly in NextJS & React Native.
