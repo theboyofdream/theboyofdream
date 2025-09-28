@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       "fonts.gstatic.com",
     ],
   },
-  distDir: "dist"
+  distDir: "docs"
 };
 
 export default nextConfig;
