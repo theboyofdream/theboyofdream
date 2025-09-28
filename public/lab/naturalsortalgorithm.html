@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide to Natural Sorting Algorithms</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 500px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 50vh;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #475569; /* slate-600 */
+        }
+        .active-nav {
+            color: #0f172a; /* slate-900 */
+            font-weight: 600;
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        /* Added transition for smoother opacity feedback */
+        .algo-button, .dataset-button {
+            transition: background-color 0.2s, border-color 0.2s, opacity 0.1s;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header class="bg-slate-100/80 backdrop-blur-sm sticky top-0 z-50 border-b border-slate-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-slate-800">Natural Sorting Algorithms</h1>
+            <div class="hidden md:flex items-center space-x-8 text-slate-500 font-medium">
+                <a href="#intro" class="nav-link">Introduction</a>
+                <a href="#explorer" class="nav-link">Explorer</a>
+                <a href="#comparison" class="nav-link">Comparison</a>
+                <a href="#visualizer" class="nav-link">Visualizer</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-white border border-slate-300 rounded-md py-2 px-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500">
+                    <option value="#intro">Introduction</option>
+                    <option value="#explorer">Explorer</option>
+                    <option value="#comparison">Comparison</option>
+                    <option value="#visualizer">Visualizer</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+        <section id="intro" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-slate-800 mb-4">What is a Natural Sort?</h2>
+            <p class="text-lg text-slate-600 max-w-3xl">
+                In computer science, a sorting algorithm is described as "natural" or "adaptive" if its performance improves on datasets that are already partially sorted. Unlike algorithms that have a fixed runtime regardless of the input's initial order, a natural sort takes advantage of existing sorted segments (called "runs") to sort the entire dataset more quickly. This makes them exceptionally efficient for real-world scenarios where data is frequently appended or contains inherent order.
+            </p>
+        </section>
+
+        <section id="explorer" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">Algorithm Explorer</h2>
+            <p class="text-lg text-slate-600 mb-8">Click on an algorithm to see its details, strengths, and weaknesses.</p>
+            <div id="algo-buttons" class="flex flex-wrap gap-3 mb-8">
+            </div>
+            <!-- Algorithm details and the new Gemini feature will be rendered here -->
+            <div id="algo-details-container" class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-slate-200 min-h-[300px] transition-all duration-300">
+            </div>
+        </section>
+
+        <section id="comparison" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">Side-by-Side Comparison</h2>
+            <p class="text-lg text-slate-600 mb-8">A summary of the key characteristics of each natural sorting algorithm for quick reference.</p>
+            <div class="overflow-x-auto bg-white rounded-xl shadow-sm border border-slate-200">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-100">
+                        <tr>
+                            <th class="p-4 font-semibold text-slate-800">Algorithm</th>
+                            <th class="p-4 font-semibold text-slate-800">Time Complexity (Best/Avg/Worst)</th>
+                            <th class="p-4 font-semibold text-slate-800">Space Complexity</th>
+                            <th class="p-4 font-semibold text-slate-800">Key Feature</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparison-table-body" class="divide-y divide-slate-200">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="visualizer" class="scroll-mt-24">
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">Performance Visualizer</h2>
+            <p class="text-lg text-slate-600 mb-8">Compare the relative performance of these algorithms based on the initial order of the data. The chart displays normalized performance units, where a lower number is better (faster).</p>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-6">
+                    <label class="font-medium text-slate-700">Select Dataset Type:</label>
+                    <div id="dataset-buttons" class="flex flex-wrap gap-3">
+                        <!-- Buttons added via JS -->
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- UPDATED FOOTER SECTION -->
+    <footer class="bg-slate-100 border-t border-slate-200 mt-16">
+        <div class="container mx-auto px-6 py-6 text-center">
+            <div class="flex justify-center items-center space-x-6">
+                <!-- GitHub Link -->
+                <a 
+                    href="https://github.com/theboyofdream" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="text-slate-500 hover:text-blue-600 transition-colors duration-200 font-medium text-sm rounded-md p-1"
+                >
+                    GitHub
+                </a>
+
+                <!-- Twitter (X) Link -->
+                <a 
+                    href="https://x.com/theboyofdream" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="text-slate-500 hover:text-blue-600 transition-colors duration-200 font-medium text-sm rounded-md p-1"
+                >
+                    Twitter (X)
+                </a>
+
+                <!-- Peerlist Link -->
+                <a 
+                    href="https://peerlist.io/theboyofdream" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="text-slate-500 hover:text-blue-600 transition-colors duration-200 font-medium text-sm rounded-md p-1"
+                >
+                    Peerlist
+                </a>
+            </div>
+        </div>
+    </footer>
+    <!-- END UPDATED FOOTER SECTION -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // // --- Gemini API Configuration and Helpers ---
+            // const API_MODEL = 'gemini-2.5-flash-preview-05-20';
+            // // Note: The API key is not included here; Canvas will provide it at runtime.
+            // const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${API_MODEL}:generateContent?key=`;
+
+            // const delay = ms => new Promise(res => setTimeout(res, ms));
+
+            // /**
+            //  * Fetches data with exponential backoff for retries (e.g., on rate limits).
+            //  */
+            // async function exponentialBackoffFetch(url, options, maxRetries = 5) {
+            //     for (let i = 0; i < maxRetries; i++) {
+            //         try {
+            //             const response = await fetch(url, options);
+            //             if (response.status === 429 && i < maxRetries - 1) {
+            //                 // Rate limit encountered, calculating backoff time
+            //                 const backoffTime = Math.pow(2, i) * 1000 + Math.random() * 1000;
+            //                 await delay(backoffTime);
+            //                 continue;
+            //             }
+            //             if (!response.ok) {
+            //                 throw new Error(`HTTP error! status: ${response.status}`);
+            //             }
+            //             return response;
+            //         } catch (error) {
+            //             if (i === maxRetries - 1) throw error;
+            //             // Other network error, retry
+            //             const backoffTime = Math.pow(2, i) * 1000 + Math.random() * 1000;
+            //             await delay(backoffTime);
+            //         }
+            //     }
+            // }
+
+            // /**
+            //  * Calls the Gemini API to generate a simplified, analogy-based explanation.
+            //  */
+            // async function explainAlgorithmWithGemini(algoName, description) {
+            //     const explainButton = document.getElementById('gemini-explain-button');
+            //     const outputDiv = document.getElementById('gemini-output');
+            //     const responseDiv = document.getElementById('gemini-response');
+            //     const sourcesDiv = document.getElementById('gemini-sources');
+                
+            //     // Show loading state
+            //     outputDiv.classList.remove('hidden');
+            //     sourcesDiv.innerHTML = '';
+            //     responseDiv.innerHTML = `<div class="flex items-center space-x-2 text-blue-600 font-medium">
+            //         <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            //             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            //             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            //         </svg>
+            //         <span>Generating analogy... Please wait.</span>
+            //     </div>`;
+            //     explainButton.disabled = true;
+
+            //     // Craft the prompt for the LLM
+            //     const userQuery = `Explain the following sorting algorithm, ${algoName}, to a college student who needs an intuitive, non-technical analogy. Focus on the core mechanism described: "${description}"`;
+            //     const systemPrompt = "You are an expert algorithm tutor, specializing in adaptive sorting methods. Your goal is to provide clear, engaging, and accurate explanations using real-world analogies (like sorting cards, filing systems, etc.). Your response must be highly intuitive.";
+
+            //     const payload = {
+            //         contents: [{ parts: [{ text: userQuery }] }],
+            //         // Use Google Search for grounding and ensuring accuracy
+            //         tools: [{ "google_search": {} }], 
+            //         systemInstruction: { parts: [{ text: systemPrompt }] },
+            //     };
+
+            //     try {
+            //         const response = await exponentialBackoffFetch(geminiApiUrl, {
+            //             method: 'POST',
+            //             headers: { 'Content-Type': 'application/json' },
+            //             body: JSON.stringify(payload)
+            //         });
+
+            //         const result = await response.json();
+            //         const candidate = result.candidates?.[0];
+
+            //         if (candidate && candidate.content?.parts?.[0]?.text) {
+            //             const text = candidate.content.parts[0].text;
+            //             responseDiv.innerHTML = text;
+
+            //             let sources = [];
+            //             const groundingMetadata = candidate.groundingMetadata;
+            //             if (groundingMetadata && groundingMetadata.groundingAttributions) {
+            //                 sources = groundingMetadata.groundingAttributions
+            //                     .map(attribution => ({
+            //                         uri: attribution.web?.uri,
+            //                         title: attribution.web?.title,
+            //                     }))
+            //                     .filter(source => source.uri && source.title);
+            //             }
+
+            //             if (sources.length > 0) {
+            //                 sourcesDiv.innerHTML = 'Source(s): ' + sources.map(s => 
+            //                     `<a href="${s.uri}" target="_blank" rel="noopener noreferrer" class="hover:underline">${s.title}</a>`
+            //                 ).join(' | ');
+            //             } else {
+            //                 sourcesDiv.innerHTML = 'Source: Grounding model used for context.';
+            //             }
+
+            //         } else {
+            //             responseDiv.innerHTML = `<p class="text-red-600">Sorry, I couldn't generate an explanation. Please try again.</p>`;
+            //         }
+            //     } catch (error) {
+            //         console.error("Gemini API Error:", error);
+            //         responseDiv.innerHTML = `<p class="text-red-600">Error: Failed to connect to the algorithm tutor. See console for details.</p>`;
+            //     } finally {
+            //         explainButton.disabled = false;
+            //     }
+            // }
+
+            const algorithmsData = {
+                timsort: {
+                    name: 'Timsort',
+                    description: 'A hybrid stable sorting algorithm, derived from merge sort and insertion sort, designed to perform well on many kinds of real-world data. It is the default sorting algorithm in Python, Java, and Android.',
+                    pros: ['Extremely efficient for partially sorted data.', 'Stable sort, preserving the order of equal elements.', 'Combines the speed of merge sort with the efficiency of insertion sort on small segments.'],
+                    cons: ['More complex to implement than simpler algorithms like insertion or bubble sort.', 'Space complexity can be O(n) in some cases.'],
+                    time: { best: 'O(n)', avg: 'O(n log n)', worst: 'O(n log n)' },
+                    space: 'O(n)',
+                    feature: 'Hybrid approach, optimized for real-world data.'
+                },
+                naturalMergeSort: {
+                    name: 'Natural Merge Sort',
+                    description: 'A variation of merge sort that improves performance by identifying and merging existing sorted "runs" in the input data, rather than recursively splitting the array down to single elements.',
+                    pros: ['Faster than standard merge sort if the input is already partially ordered.', 'Stable and conceptually straightforward.'],
+                    cons: ['Requires O(n) auxiliary space for the merge operation, similar to standard merge sort.'],
+                    time: { best: 'O(n)', avg: 'O(n log n)', worst: 'O(n log n)' },
+                    space: 'O(n)',
+                    feature: 'Merges existing sorted runs.'
+                },
+                smoothsort: {
+                    name: 'Smoothsort',
+                    description: 'An adaptive, in-place comparison sorting algorithm and a variation of heapsort. It builds a heap-like structure of Leonardo numbers to achieve adaptiveness.',
+                    pros: ['In-place sorting with O(1) space complexity.', 'Performance approaches O(n) for nearly sorted data.'],
+                    cons: ['Very complex to understand and implement correctly.', 'Not a stable sort.', 'Can be slower than heapsort on completely random data.'],
+                    time: { best: 'O(n)', avg: 'O(n log n)', worst: 'O(n log n)' },
+                    space: 'O(1)',
+                    feature: 'In-place adaptive heapsort variant.'
+                },
+                insertionSort: {
+                    name: 'Insertion Sort',
+                    description: 'A simple sorting algorithm that builds the final sorted array one item at a time. It iterates through the input elements and inserts each element into its correct position in the sorted part of the array.',
+                    pros: ['Very simple to implement.', 'Highly efficient for small datasets and nearly sorted data.', 'In-place (O(1) space) and stable.'],
+                    cons: ['Inefficient for large, randomly ordered datasets with O(n²) average and worst-case complexity.'],
+                    time: { best: 'O(n)', avg: 'O(n²)', worst: 'O(n²)' },
+                    space: 'O(1)',
+                    feature: 'Simple and efficient on small/nearly sorted lists.'
+                },
+                optimizedBubbleSort: {
+                    name: 'Optimized Bubble Sort',
+                    description: 'A variation of the basic Bubble Sort. It includes a flag that checks if any swaps were made during a pass. If a full pass occurs with no swaps, the algorithm terminates early, making it adaptive.',
+                    pros: ['Conceptually very simple.', 'Can terminate early if the list becomes sorted, giving it O(n) best-case performance.'],
+                    cons: ['Extremely inefficient for most real-world scenarios, with an O(n²) average case.'],
+                    time: { best: 'O(n)', avg: 'O(n²)', worst: 'O(n²)' },
+                    space: 'O(1)',
+                    feature: 'Terminates early if no swaps are made.'
+                }
+            };
+
+            const algoButtonsContainer = document.getElementById('algo-buttons');
+            const algoDetailsContainer = document.getElementById('algo-details-container');
+            const comparisonTableBody = document.getElementById('comparison-table-body');
+            const datasetButtonsContainer = document.getElementById('dataset-buttons');
+
+            let activeAlgoButton = null;
+            let activeDatasetButton = null;
+
+            function displayAlgoDetails(algoKey) {
+                const algo = algorithmsData[algoKey];
+                
+                // Start with the detailed description content
+                let htmlContent = '';
+                if (algo) {
+                    htmlContent = `
+                        <h3 class="text-2xl font-bold text-slate-800 mb-3">${algo.name}</h3>
+                        <p class="text-slate-600 mb-6">${algo.description}</p>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-slate-700 mb-2">Pros</h4>
+                                <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                    ${algo.pros.map(p => `<li>${p}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-700 mb-2">Cons</h4>
+                                <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                    ${algo.cons.map(c => `<li>${c}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-200 flex flex-wrap gap-x-6 gap-y-2">
+                            <div class="font-medium text-slate-700">Time: <span class="tag bg-blue-100 text-blue-800">${algo.time.best}</span> <span class="tag bg-yellow-100 text-yellow-800">${algo.time.avg}</span> <span class="tag bg-red-100 text-red-800">${algo.time.worst}</span></div>
+                            <div class="font-medium text-slate-700">Space: <span class="tag bg-green-100 text-green-800">${algo.space}</span></div>
+                        </div>
+                    `;
+                } else {
+                    htmlContent = `<p class="text-slate-500">Select an algorithm to learn more.</p>`;
+                }
+
+                // // Add the Gemini Feature UI section
+                // htmlContent += `
+                //     <div class="mt-8 pt-6 border-t border-slate-200">
+                //         <h3 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                //             ✨ Deep Dive: Ask the Algorithm Tutor
+                //         </h3>
+                //         <p class="text-slate-600 mb-4">
+                //             Get a simplified, real-world explanation for the selected algorithm.
+                //         </p>
+                //         <button id="gemini-explain-button" 
+                //                 class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                //             ${algo ? `Explain ${algo.name} with an Analogy` : 'Select Algorithm First'}
+                //         </button>
+                //         <div id="gemini-output" class="mt-6 bg-blue-50 p-4 rounded-lg border border-blue-200 hidden">
+                //             <div id="gemini-response" class="text-slate-800"></div>
+                //             <div id="gemini-sources" class="text-xs mt-3 text-blue-600 border-t border-blue-100 pt-2"></div>
+                //         </div>
+                //     </div>
+                // `;
+
+                algoDetailsContainer.innerHTML = htmlContent;
+
+                // // Attach the Gemini event listener only if an algorithm is selected
+                // if (algo) {
+                //     document.getElementById('gemini-explain-button').addEventListener('click', () => {
+                //         explainAlgorithmWithGemini(algo.name, algo.description);
+                //     });
+                // }
+            }
+
+            // --- Algorithm Explorer Setup ---
+            let firstAlgoButton = null;
+            Object.keys(algorithmsData).forEach((key, index) => {
+                const algo = algorithmsData[key];
+                
+                const button = document.createElement('button');
+                button.className = 'algo-button px-4 py-2 font-medium rounded-md border transition-colors duration-200';
+                button.textContent = algo.name;
+                button.dataset.algoKey = key;
+
+                if (key === 'timsort') {
+                    button.classList.add('bg-slate-800', 'text-white', 'border-slate-800', 'hover:bg-slate-700', 'hover:border-slate-700'); 
+                    firstAlgoButton = button;
+                } else {
+                    button.classList.add('bg-white', 'text-slate-700', 'border-slate-300', 'hover:bg-slate-100', 'hover:border-slate-400');
+                }
+
+                button.addEventListener('click', () => {
+                    button.style.opacity = 0.8;
+                    setTimeout(() => { button.style.opacity = 1; }, 100);
+
+                    displayAlgoDetails(key);
+                    
+                    if(activeAlgoButton && activeAlgoButton !== button) {
+                        activeAlgoButton.classList.remove('bg-slate-800', 'text-white', 'border-slate-800', 'hover:bg-slate-700', 'hover:border-slate-700');
+                        activeAlgoButton.classList.add('bg-white', 'text-slate-700', 'border-slate-300', 'hover:bg-slate-100', 'hover:border-slate-400');
+                    }
+                    
+                    button.classList.add('bg-slate-800', 'text-white', 'border-slate-800', 'hover:bg-slate-700', 'hover:border-slate-700');
+                    button.classList.remove('bg-white', 'text-slate-700', 'border-slate-300', 'hover:bg-slate-100', 'hover:border-slate-400');
+                    activeAlgoButton = button;
+                });
+                algoButtonsContainer.appendChild(button);
+                
+                const row = document.createElement('tr');
+                row.className = "hover:bg-slate-50";
+                row.innerHTML = `
+                    <td class="p-4 font-medium text-slate-800">${algo.name}</td>
+                    <td class="p-4">${algo.time.best} / ${algo.time.avg} / ${algo.time.worst}</td>
+                    <td class="p-4">${algo.space}</td>
+                    <td class="p-4">${algo.feature}</td>
+                `;
+                comparisonTableBody.appendChild(row);
+            });
+
+            if (firstAlgoButton) {
+                displayAlgoDetails(firstAlgoButton.dataset.algoKey);
+                activeAlgoButton = firstAlgoButton;
+            } else {
+                displayAlgoDetails(null);
+            }
+
+            // --- Performance Visualizer Setup ---
+            const performanceData = {
+                nearlySorted: { name: 'Nearly Sorted', data: [10, 15, 70, 20, 25] },
+                random: { name: 'Random', data: [50, 55, 65, 90, 100] },
+                reversed: { name: 'Reversed', data: [60, 65, 75, 100, 110] }
+            };
+
+            const labels = Object.values(algorithmsData).map(a => a.name);
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            
+            const performanceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Relative Performance (Nearly Sorted)',
+                        data: performanceData.nearlySorted.data,
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Performance Units (Normalized)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + ' units';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            function updateChart(datasetKey, button) {
+                performanceChart.data.datasets[0].data = performanceData[datasetKey].data;
+                performanceChart.data.datasets[0].label = `Relative Performance (${performanceData[datasetKey].name})`;
+                performanceChart.update();
+
+                if (activeDatasetButton && activeDatasetButton !== button) {
+                    activeDatasetButton.classList.remove('bg-slate-800', 'text-white', 'border-slate-800', 'hover:bg-slate-700', 'hover:border-slate-700');
+                    activeDatasetButton.classList.add('bg-white', 'text-slate-700', 'border-slate-300', 'hover:bg-slate-100', 'hover:border-slate-400');
+                }
+
+                button.classList.add('bg-slate-800', 'text-white', 'border-slate-800', 'hover:bg-slate-700', 'hover:border-slate-700');
+                button.classList.remove('bg-white', 'text-slate-700', 'border-slate-300', 'hover:bg-slate-100', 'hover:border-slate-400');
+                activeDatasetButton = button;
+            }
+
+            let firstDatasetButton = null;
+            Object.keys(performanceData).forEach((key, index) => {
+                const dataset = performanceData[key];
+                
+                const button = document.createElement('button');
+                button.className = 'dataset-button px-4 py-2 font-medium rounded-md border transition-colors duration-200';
+                button.textContent = dataset.name;
+                button.dataset.datasetKey = key;
+
+                if (key === 'nearlySorted') {
+                    button.classList.add('bg-slate-800', 'text-white', 'border-slate-800', 'hover:bg-slate-700', 'hover:border-slate-700'); 
+                    firstDatasetButton = button;
+                } else {
+                    button.classList.add('bg-white', 'text-slate-700', 'border-slate-300', 'hover:bg-slate-100', 'hover:border-slate-400');
+                }
+
+                button.addEventListener('click', () => {
+                    button.style.opacity = 0.8;
+                    setTimeout(() => { button.style.opacity = 1; }, 100);
+                    updateChart(key, button);
+                });
+                datasetButtonsContainer.appendChild(button);
+            });
+
+            // Initialize the chart data and active button
+            if (firstDatasetButton) {
+                activeDatasetButton = firstDatasetButton;
+                // Chart is already initialized with 'nearlySorted' data, so no need to call updateChart on load
+            }
+            
+            // --- Navigation Logic ---
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            mobileNav.addEventListener('change', () => {
+                const targetId = mobileNav.value;
+                document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    // Adjust for sticky header height (approx 120px)
+                    if (window.scrollY >= sectionTop - 120) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active-nav');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
