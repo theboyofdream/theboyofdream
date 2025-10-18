@@ -1,3 +1,3 @@
 ### Hi, I'm Fullstack developer
-Building Web, Mobile & Desktop apps. <br>
+Building User Facing Apps for Web, Mobile & Desktop. <br>
 Open-Source contributor [@team.shiksha](https://team.shiksha)
