@@ -7,10 +7,9 @@ const nextConfig: NextConfig = {
       "cdn.tailwindcss.com",
       "https://cdn.jsdelivr.net/npm/chart.js",
       "fonts.googleapis.com",
-      "fonts.gstatic.com",
+      "fonts.gstatic.com"
     ],
-  },
-  distDir: "docs"
+  }
 };
 
 export default nextConfig;

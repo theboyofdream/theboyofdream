@@ -10,7 +10,11 @@ function Header({
     className,
     ...props
 }: React.ComponentProps<"header"> & {
-    children: Array<React.ReactElement<typeof HeaderNavigation> | React.ReactElement<typeof HeaderContent>>
+    children:
+    | React.ReactElement<typeof HeaderNavigation>
+    | React.ReactElement<typeof HeaderContent>
+    | Array<React.ReactElement<typeof HeaderNavigation> | React.ReactElement<typeof HeaderContent>>
+
 }) {
     return (
         <header
@@ -28,6 +32,7 @@ function HeaderNavigation() {
     }, [theme, setTheme])
 
     const links = [
+        { href: "/", label: "Home" },
         { href: "/projects", label: "Projects" },
         { href: "/lab", label: "Lab" },
         { href: "/stats", label: "Stats" },
@@ -36,7 +41,18 @@ function HeaderNavigation() {
 
     return (
         <div className="w-full max-w-4xl self-center flex justify-between">
-            <span></span>
+            <span className="text-sm">
+                {/* <Link
+                    href={"/"}
+                    className={cn(
+                        pathname?.toLowerCase() == "/"
+                            ? "text-primary"
+                            : "text-muted-foreground dark:text-muted-foreground/60 hover:text-primary dark:hover:text-primary"
+                    )}
+                > */}
+                {/* </Link> */}
+                    {/* <span className="text-gray-500/50 dark:text-gray-500">@theboyofdream</span> */}
+            </span>
             <div className="flex gap-4 text-sm items-center">
                 {links.map(({ href, label }) => (
                     <Link
@@ -45,8 +61,9 @@ function HeaderNavigation() {
                         className={
                             cn(
                                 // "hover:underline underline-offset-4",
-                                pathname.toLowerCase().startsWith(href.toLowerCase())
-                                    ? "text-primary font-medium"
+                                // pathname?.toLowerCase().startsWith(href.toLowerCase())
+                                pathname?.toLowerCase() == href.toLowerCase()
+                                    ? "text-primary"
                                     : "text-muted-foreground dark:text-muted-foreground/60 hover:text-primary dark:hover:text-primary"
                             )
                         }

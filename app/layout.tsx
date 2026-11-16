@@ -1,3 +1,4 @@
+import NextTopLoader from "nextjs-toploader"
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -14,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "theboyofdream",
+  title: "theboyofdream.com",
   description: "Personal Portfolio",
 };
 
@@ -34,6 +35,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+            <NextTopLoader 
+              showSpinner={false}
+            />
           {children}
         </ThemeProvider>
       </body>
