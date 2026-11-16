@@ -16,4 +16,12 @@ const indexRoute = createRoute({
   path: "/",
 });
 
-export const routeTree = rootRoute.addChildren([indexRoute]);
+// Catch-all so the app also renders when served from a subpath
+// (e.g. /komorebi/index.html) instead of only at the base root.
+const catchAllRoute = createRoute({
+  component: AppHome,
+  getParentRoute: () => rootRoute,
+  path: "*",
+});
+
+export const routeTree = rootRoute.addChildren([indexRoute, catchAllRoute]);

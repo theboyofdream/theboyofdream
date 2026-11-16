@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated static bundle of tools/komorebi (vite build --base=./, output copied here)
+public/komorebi/

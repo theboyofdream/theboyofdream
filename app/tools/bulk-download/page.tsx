@@ -18,11 +18,7 @@ export default function BulkDownloadPage() {
   function buildList() {
     const list = parseInput(raw);
     setUrls(list);
-    setNote(
-      list.length === 0
-        ? "No valid URLs found (one per comma or line, http/https only)."
-        : `${list.length} link${list.length > 1 ? "s" : ""} ready.`
-    );
+    setNote(list.length === 0 ? "no valid URLs — one per comma or line, http(s) only" : `ok. ${list.length} link${list.length > 1 ? "s" : ""} queued`);
   }
 
   function fileNameFor(url: string, index: number) {
@@ -44,48 +40,35 @@ export default function BulkDownloadPage() {
       a.rel = "noopener";
       a.click();
     });
-    setNote(
-      "Triggered downloads (browser may block mass downloads — allow them if prompted). CORS-protected files can’t be fetched cross-origin; these use direct links instead."
-    );
+    setNote("fired. browser may block mass downloads — allow when prompted. CORS-locked files won't come through; these use direct links.");
   }
 
   return (
-    <main className="flex min-h-svh flex-col items-center gap-4 p-6">
-      <Link href="/tools" className="self-start text-sm text-muted-foreground hover:underline">
-        ← tools
-      </Link>
-      <h1 className="text-3xl font-bold">Bulk file downloader</h1>
-      <p className="max-w-xl text-center text-muted-foreground">
-        Paste comma-separated URLs → get a numbered download list, or fire them all.
-      </p>
+    // Terminal personality: near-black canvas, green phosphor, mono
+    <main className="flex min-h-svh flex-col items-center gap-4 bg-[#0C0C0C] p-6 font-mono text-[#22C55E]">
+      <Link href="/tools" className="self-start text-xs text-[#166534] hover:text-[#22C55E]">← tools</Link>
+
+      <h1 className="text-2xl font-bold text-[#4ADE80] shadow-[0_0_18px_rgba(34,197,94,0.35)]">bulk-dl<span className="animate-pulse">█</span></h1>
+      <p className="text-xs text-[#166534]">comma-separated URLs → numbered downloads</p>
+
       <textarea
         value={raw}
         onChange={(e) => setRaw(e.target.value)}
         rows={6}
-        className="w-full max-w-xl rounded-lg border bg-background p-3 font-mono text-sm outline-none focus:ring-2"
+        className="w-full max-w-2xl border border-[#14532D] bg-[#052E16] p-3 text-sm text-[#4ADE80] caret-[#22C55E] outline-none placeholder:text-[#166534] focus:border-[#22C55E]"
         placeholder="https://example.com/a.pdf, https://example.com/b.zip"
       />
-      <div className="flex gap-3">
-        <button type="button" onClick={buildList} className="rounded-lg border px-4 py-2 hover:bg-accent">
-          Build list
-        </button>
-        <button
-          type="button"
-          onClick={downloadAll}
-          disabled={urls.length === 0}
-          className="rounded-lg border bg-primary px-4 py-2 text-primary-foreground disabled:opacity-50"
-        >
-          Download all
-        </button>
+      <div className="flex gap-2">
+        <button type="button" onClick={buildList} className="border border-[#14532D] px-4 py-1.5 text-sm text-[#4ADE80] transition hover:bg-[#052E16]">[ build list ]</button>
+        <button type="button" onClick={downloadAll} disabled={urls.length === 0} className="border border-[#22C55E] bg-[#14532D] px-4 py-1.5 text-sm text-[#4ADE80] transition hover:bg-[#166534] disabled:opacity-30">[ download all ]</button>
       </div>
-      {note && <p className="text-sm text-muted-foreground">{note}</p>}
+      {note && <p className="text-xs text-[#166534]">{'> '}{note}</p>}
       {urls.length > 0 && (
-        <ol className="w-full max-w-xl list-decimal space-y-1 pl-6 text-sm">
+        <ol className="w-full max-w-2xl space-y-1 text-sm">
           {urls.map((url, i) => (
-            <li key={i}>
-              <a href={url} download={fileNameFor(url, i)} className="break-all underline">
-                {fileNameFor(url, i)}
-              </a>
+            <li key={i} className="flex gap-2">
+              <span className="text-[#166534]">{String(i + 1).padStart(2, "0")}.</span>
+              <a href={url} download={fileNameFor(url, i)} className="break-all text-[#4ADE80] underline decoration-[#14532D] hover:text-[#86EFAC]">{fileNameFor(url, i)}</a>
             </li>
           ))}
         </ol>
